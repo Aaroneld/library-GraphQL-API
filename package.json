@@ -11,6 +11,25 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "jest": {
+    "testEnvironment": "node",
+    "collectCoverage": true,
+    "coverageProvider": "v8",
+    "collectCoverageFrom": [
+      "**/*.{js,jsx}",
+      "!**/node_modules/**",
+      "!**/vendor/**",
+      "!**/database/**",
+      "!**/tests/**",
+      "!**/spec/**",
+      "!**/*.spec.{js,jsx}",
+      "!**/*.test.{js,jsx}",
+      "!**/coverage/**",
+      "!**/data/migrations/**",
+      "!**/data/seeds/**",
+      "!**/index.js"
+    ]
+  },
   "dependencies": {
     "cross-env": "^7.0.3",
     "dotenv": "^8.2.0",
