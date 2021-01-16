@@ -137,12 +137,13 @@ exports.up = function (knex) {
                 .onDelete("CASCADE");
             t.primary(["libraryId", "bookId", "memberId"]);
             t.string("requestStatus").notNullable();
+            t.string("timeRequested").notNullable();
         });
 };
 
 exports.down = function (knex) {
     return knex.schema
-        .dropTableIfExists("loanedBooks")
+        .dropTableIfExists("loanedAndRequestedBooks")
         .dropTableIfExists("libraryBooks")
         .dropTableIfExists("authorAwards")
         .dropTableIfExists("bookAwards")
