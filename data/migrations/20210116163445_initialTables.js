@@ -13,12 +13,6 @@ exports.up = function (knex) {
             t.string("country", "2").notNullable();
             t.string("state", 2);
         })
-        .createTable("members", (t) => {
-            t.increments();
-            t.string("firstName", 70).notNullable();
-            t.string("lastName", 70).notNullable();
-            t.string("dob", 20).notNullable();
-        })
         .createTable("awards", (t) => {
             t.increments();
             t.string("type");
@@ -31,15 +25,15 @@ exports.up = function (knex) {
             t.string("streetAddress", 255).notNullable();
             t.integer("allowedLoans", 30).notNullable();
         })
-        .createTable("librarians", (t) => {
+        .createTable("users", (t) => {
             t.increments();
             t.string("firstName", 70).notNullable();
             t.string("lastName", 70).notNullable();
             t.string("dob", 20).notNullable();
-            t.integer("salary").notNullable();
+            t.string("username").notNullable().unique();
+            t.string("password").notNullable();
             t.integer("libraryId")
                 .unsigned()
-                .notNullable()
                 .references("id")
                 .inTable("libraries")
                 .onUpdate("CASCADE")
@@ -119,7 +113,7 @@ exports.up = function (knex) {
             t.integer("quantity").notNullable();
             t.integer("loaned").notNullable();
         })
-        .createTable("loanedBooks", (t) => {
+        .createTable("loanedAndRequestedBooks", (t) => {
             t.integer("libraryId")
                 .unsigned()
                 .notNullable()
@@ -142,6 +136,7 @@ exports.up = function (knex) {
                 .onUpdate("CASCADE")
                 .onDelete("CASCADE");
             t.primary(["libraryId", "bookId", "memberId"]);
+            t.string("requestStatus").notNullable();
         });
 };
 
@@ -152,10 +147,9 @@ exports.down = function (knex) {
         .dropTableIfExists("authorAwards")
         .dropTableIfExists("bookAwards")
         .dropTableIfExists("books")
-        .dropTableIfExists("librarians")
+        .dropTableIfExists("users")
         .dropTableIfExists("libraries")
         .dropTableIfExists("awards")
-        .dropTableIfExists("members")
         .dropTableIfExists("authors")
         .dropTableIfExists("publishers");
 };
