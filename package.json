@@ -16,9 +16,6 @@
         "testEnvironment": "node",
         "collectCoverage": true,
         "coverageProvider": "v8",
-        "transform": {
-            "^.+\\.graphql$": "graphql-import-node/jest"
-        },
         "collectCoverageFrom": [
             "**/*.{js,jsx}",
             "!**/node_modules/**",
@@ -46,6 +43,7 @@
         "sqlite3": "^5.0.0"
     },
     "devDependencies": {
+        "faker": "^5.1.0",
         "jest": "^26.6.3",
         "supertest": "^6.1.1"
     }
