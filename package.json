@@ -43,6 +43,7 @@
         "sqlite3": "^5.0.0"
     },
     "devDependencies": {
+        "@graphql-tools/mock": "^7.0.0",
         "faker": "^5.1.0",
         "jest": "^26.6.3",
         "supertest": "^6.1.1"
