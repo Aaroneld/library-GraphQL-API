@@ -32,6 +32,7 @@ exports.up = function (knex) {
             t.string("dob", 20).notNullable();
             t.string("username").notNullable().unique();
             t.string("password").notNullable();
+            t.string("type").notNullable();
             t.integer("libraryId")
                 .unsigned()
                 .references("id")

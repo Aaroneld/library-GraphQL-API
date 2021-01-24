@@ -1,4 +1,5 @@
 const faker = require("faker");
+const libraries = require("./test-data/libraries");
 
 exports.seed = function (knex) {
     // Deletes ALL existing entries
@@ -9,7 +10,7 @@ exports.seed = function (knex) {
 
             const testUsers = [];
 
-            for (let i = 0; i < 30; i++) {
+            for (let i = 1; i < 30; i++) {
                 testUsers.push({
                     id: i,
                     firstName: faker.fake("{{name.firstName}}"),
@@ -17,9 +18,32 @@ exports.seed = function (knex) {
                     dob: faker.fake("{{date.past}}"),
                     username: faker.fake("{{internet.userName}}"),
                     password: faker.fake("{{internet.password}}"),
-                    libraryId: Math.floor(Math.random() * 18),
+                    type: "MEMBER",
                 });
             }
+
+            for (let i = 1; i < 30; i++) {
+                testUsers.push({
+                    id: i + 30,
+                    firstName: faker.fake("{{name.firstName}}"),
+                    lastName: faker.fake("{{name.lastName}}"),
+                    dob: faker.fake("{{date.past}}"),
+                    username: faker.fake("{{internet.userName}}"),
+                    password: faker.fake("{{internet.password}}"),
+                    libraryID: Math.floor(Math.random() * libraries.length),
+                    type: "LIBRARIAN",
+                });
+            }
+
+            testUsers.unshift({
+                id: 0,
+                firstName: faker.fake("{{name.firstName}}"),
+                lastName: faker.fake("{{name.lastName}}"),
+                dob: faker.fake("{{date.past}}"),
+                username: faker.fake("{{internet.userName}}"),
+                password: faker.fake("{{internet.password}}"),
+                type: "ADMIN",
+            });
 
             return knex("users").insert(testUsers);
         });
