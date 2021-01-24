@@ -1,172 +1,172 @@
-const typeDefs = `
+const gql = require("graphql-tag");
 
-""""""
+const typeDefs = gql`
+    """
 
-type Publisher {
-    id: ID!
-    name: String!
-    books: [Book]!
-}
+    """
+    type Publisher {
+        id: ID!
+        name: String!
+        books: [Book]!
+    }
 
-type Award {
-    id: ID!
-    type: String!
-}
+    type Award {
+        id: ID!
+        type: String!
+    }
 
-type Author {
-    id: ID!
-    firstName: String!
-    lastName: String!
-    penName: String
-    dob: String!
-    country: String!
-    state: String
-    books: [Book]!
-    awards: [Award]!
-}
+    type Author {
+        id: ID!
+        firstName: String!
+        lastName: String!
+        penName: String
+        dob: String!
+        country: String!
+        state: String
+        books: [Book]!
+        awards: [Award]!
+    }
 
+    type Book {
+        id: ID!
+        title: String!
+        isbn: String!
+        yearWritten: String!
+        genre: String!
+        Author: Author!
+        Awards: [Award]!
+        Libraries: [LibraryBookInformation]!
+    }
 
-type Book {
-    id: ID!
-    title: String!
-    isbn: String!
-    yearWritten: String!
-    genre: String!
-    Author: Author!
-    Awards: [Award]!
-    Libraries: [LibraryBookInformation]!
-}
+    """
 
-""""""
+    """
+    type Library {
+        id: ID!
+        name: String!
+        state: String!
+        city: String!
+        streetAddress: String!
+        allowedLoans: Int!
+        books: [Book]!
+    }
 
-type Library {
-    id: ID!
-    name: String!
-    state: String!
-    city: String!
-    streetAddress: String!
-    allowedLoans: Int!
-    books: [Book]!
-}
+    type LibraryBookInformation {
+        Library: Library
+        quantity: Int
+        loaned: Int
+    }
 
-type LibraryBookInformation {
-    Library: Library
-    quantity: Int
-    loaned: Int
-}
+    """
 
+    """
+    interface User {
+        id: ID!
+        firstName: String!
+        lastName: String!
+        dob: String!
+        username: String!
+        password: String!
+    }
 
-""""""
-interface User {
-    id: ID!
-    firstName: String!
-    lastName: String!
-    dob: String!
-    username: String!
-    password: String!        
-}
+    enum RequestStatus {
+        REQUESTED
+        LOANED
+        RETURNED
+    }
 
-enum RequestStatus {
-    REQUESTED
-    LOANED
-    RETURNED
-}
+    type MemberBookInfo {
+        book: Book!
+        requestStatus: RequestStatus!
+        timeRequested: String!
+    }
 
-type MemberBookInfo {
-    book: Book!
-    requestStatus: RequestStatus!
-    timeRequested: String!
-}
+    type Member implements User {
+        id: ID!
+        firstName: String!
+        lastName: String!
+        dob: String!
+        username: String!
+        password: String!
+        books: [MemberBookInfo]!
+    }
 
-type Member implements User {
-    id: ID!
-    firstName: String!
-    lastName: String!
-    dob: String!
-    username: String!
-    password: String!  
-    books: [MemberBookInfo]!
-}
+    type Librarian implements User {
+        id: ID!
+        firstName: String!
+        lastName: String!
+        dob: String!
+        username: String!
+        password: String!
+        library: Library!
+    }
 
-type Librarian implements User {
-    id: ID!
-    firstName: String!
-    lastName: String!
-    dob: String!
-    username: String!
-    password: String!  
-    library: Library!
-}
+    type Admin implements User {
+        id: ID!
+        firstName: String!
+        lastName: String!
+        dob: String!
+        username: String!
+        password: String!
+    }
 
-type Admin implements User {
-    id: ID!
-    firstName: String!
-    lastName: String!
-    dob: String!
-    username: String!
-    password: String!  
-}
+    union UserType = Admin | Librarian | Member
 
-union UserType = Admin | Librarian | Member
+    """
 
-""""""
+    """
+    input BookQueryType {
+        id: Int
+        title: String
+        isbn: String
+        yearWritten: String
+        genre: String
+        author: Int
+        libraries: Int
+    }
 
-input BookQueryType {
-    id: Int
-    title: String
-    isbn: String
-    yearWritten: String
-    genre: String
-    author: Int
-    libraries: Int
-}
+    input AuthorQueryType {
+        id: Int
+        firstName: String
+        lastName: String
+        penName: String
+        dob: String
+        country: String
+        state: String
+    }
 
-input AuthorQueryType {
-    id: Int
-    firstName: String
-    lastName: String
-    penName: String
-    dob: String
-    country: String
-    state: String
-}
+    input LibraryQueryType {
+        id: Int
+        name: String
+        state: String
+        city: String
+        streetAddress: String
+        allowedLoans: Int
+    }
 
-input LibraryQueryType {
-    id: Int
-    name: String
-    state: String
-    city: String
-    streetAddress: String
-    allowedLoans: Int
-}
+    input AwardQueryType {
+        id: Int
+        name: String
+    }
 
-input AwardQueryType {
-    id: Int
-    name: String
-}
+    type Query {
+        hello: String!
 
+        Books(queryParams: BookQueryType): [Book]!
+        Authors(queryParams: AuthorQueryType): [Author]!
+        Libraries(queryParams: LibraryQueryType): [Library]!
+        Users: [UserType]!
+        Awards(queryParams: AwardQueryType): [Award]!
+    }
 
+    type Mutation {
+        temp: String!
+    }
 
-type Query {
-    hello: String!
-
-    Books(queryParams: BookQueryType): [Book]!
-    Authors(queryParams: AuthorQueryType): [Author]!
-    Libraries(queryParams: LibraryQueryType): [Library]!
-    Users: [UserType]!
-    Awards(queryParams: AwardQueryType): [Award]!
-
-}
-
-type Mutation {
-    temp: String!
-}
-
-schema {
-query: Query
-mutation: Mutation
-    
-}
+    schema {
+        query: Query
+        mutation: Mutation
+    }
 `;
 
 module.exports = typeDefs;
