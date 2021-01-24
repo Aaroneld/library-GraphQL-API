@@ -32,9 +32,9 @@ type Book {
     isbn: String!
     yearWritten: String!
     genre: String!
-    author: Author!
-    awards: [Award]!
-    libraries: [LibraryBookInformation]!
+    Author: Author!
+    Awards: [Award]!
+    Libraries: [LibraryBookInformation]!
 }
 
 """"""
@@ -50,9 +50,9 @@ type Library {
 }
 
 type LibraryBookInformation {
-    library: Library
-    quantity: Int!
-    loaned: Int!
+    Library: Library
+    quantity: Int
+    loaned: Int
 }
 
 
@@ -88,7 +88,7 @@ type Member implements User {
     books: [MemberBookInfo]!
 }
 
-type Librarian implements User{
+type Librarian implements User {
     id: ID!
     firstName: String!
     lastName: String!
@@ -107,20 +107,54 @@ type Admin implements User {
     password: String!  
 }
 
-union UserTypes = Admin | Librarian | Member
+union UserType = Admin | Librarian | Member
 
 """"""
+
+input BookQueryType {
+    id: Int
+    title: String
+    isbn: String
+    yearWritten: String
+    genre: String
+    author: Int
+    libraries: Int
+}
+
+input AuthorQueryType {
+    id: Int
+    firstName: String
+    lastName: String
+    penName: String
+    dob: String
+    country: String
+    state: String
+}
+
+input LibraryQueryType {
+    id: Int
+    name: String
+    state: String
+    city: String
+    streetAddress: String
+    allowedLoans: Int
+}
+
+input AwardQueryType {
+    id: Int
+    name: String
+}
+
 
 
 type Query {
     hello: String!
 
-
-    Books: [Book]!
-    Authors: [Author]!
-    Libraries: [Library]!
-    Users: [UserTypes]!
-    Awards: [Award]!
+    Books(queryParams: BookQueryType): [Book]!
+    Authors(queryParams: AuthorQueryType): [Author]!
+    Libraries(queryParams: LibraryQueryType): [Library]!
+    Users: [UserType]!
+    Awards(queryParams: AwardQueryType): [Award]!
 
 }
 
