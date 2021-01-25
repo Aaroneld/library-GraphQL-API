@@ -2,7 +2,7 @@ const gql = require("graphql-tag");
 
 const typeDefs = gql`
     """
-
+    Main Types
     """
     type Publisher {
         id: ID!
@@ -23,8 +23,8 @@ const typeDefs = gql`
         dob: String!
         country: String!
         state: String
-        books: [Book]!
-        awards: [Award]!
+        Books: [Book]!
+        Awards: [Award]!
     }
 
     type Book {
@@ -35,12 +35,10 @@ const typeDefs = gql`
         genre: String!
         Author: Author!
         Awards: [Award]!
-        Libraries: [LibraryBookInformation]!
+        Libraries: [BookLibraryInformation]!
+        Publisher: Publisher!
     }
 
-    """
-
-    """
     type Library {
         id: ID!
         name: String!
@@ -48,17 +46,11 @@ const typeDefs = gql`
         city: String!
         streetAddress: String!
         allowedLoans: Int!
-        books: [Book]!
-    }
-
-    type LibraryBookInformation {
-        Library: Library
-        quantity: Int
-        loaned: Int
+        Books: [LibraryBookInformation]!
     }
 
     """
-
+    UserTypes with Interface
     """
     interface User {
         id: ID!
@@ -69,18 +61,6 @@ const typeDefs = gql`
         password: String!
     }
 
-    enum RequestStatus {
-        REQUESTED
-        LOANED
-        RETURNED
-    }
-
-    type MemberBookInfo {
-        book: Book!
-        requestStatus: RequestStatus!
-        timeRequested: String!
-    }
-
     type Member implements User {
         id: ID!
         firstName: String!
@@ -88,7 +68,7 @@ const typeDefs = gql`
         dob: String!
         username: String!
         password: String!
-        books: [MemberBookInfo]!
+        Books: [MemberBookInfo]!
     }
 
     type Librarian implements User {
@@ -98,7 +78,7 @@ const typeDefs = gql`
         dob: String!
         username: String!
         password: String!
-        library: Library!
+        Library: Library!
     }
 
     type Admin implements User {
@@ -113,7 +93,35 @@ const typeDefs = gql`
     union UserType = Admin | Librarian | Member
 
     """
+    JoinTableTypes
+    """
+    enum RequestStatus {
+        REQUESTED
+        LOANED
+        RETURNED
+    }
 
+    type BookLibraryInformation {
+        Library: Library
+        quantity: Int
+        loaned: Int
+    }
+
+    type LibraryBookInformation {
+        Book: Book
+        quantity: Int
+        loaned: Int
+    }
+
+    type MemberBookInfo {
+        Book: Book!
+        Library: Library!
+        requestStatus: RequestStatus!
+        timeRequested: String!
+    }
+
+    """
+    Query Input Types
     """
     input BookQueryType {
         id: Int
@@ -157,6 +165,7 @@ const typeDefs = gql`
         Libraries(queryParams: LibraryQueryType): [Library]!
         Users: [UserType]!
         Awards(queryParams: AwardQueryType): [Award]!
+        Publisher: Publisher!
     }
 
     type Mutation {

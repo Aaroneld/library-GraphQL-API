@@ -17,7 +17,7 @@ exports.seed = function (knex) {
 
             testLoanedAndRequestedBooks.unshift({
                 libraryId: 0,
-                bookId: books.length,
+                bookId: books.length - 1,
                 memberId: Math.floor(Math.random() * 30),
                 requestStatus: "LOANED",
                 timeRequested: faker.fake("{{date.past}}"),
@@ -25,7 +25,7 @@ exports.seed = function (knex) {
 
             testLoanedAndRequestedBooks.unshift({
                 libraryId: 1,
-                bookId: books.length - 1,
+                bookId: books.length - 2,
                 memberId: Math.floor(Math.random() * 30),
                 requestStatus: "REQUESTED",
                 timeRequested: faker.fake("{{date.past}}"),
@@ -33,7 +33,7 @@ exports.seed = function (knex) {
 
             testLoanedAndRequestedBooks.unshift({
                 libraryId: 2,
-                bookId: books.length - 2,
+                bookId: books.length - 3,
                 memberId: Math.floor(Math.random() * 30),
                 requestStatus: "RETURNED",
                 timeRequested: faker.fake("{{date.past}}"),
